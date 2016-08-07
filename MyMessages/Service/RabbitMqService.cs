@@ -17,7 +17,7 @@ namespace MyMessages.Service
                 UserName = "guest",
                 Password = "guest",
                 VirtualHost = "/",
-                HostName = "172.22.32.31",
+                HostName = "",
                 Port = AmqpTcpEndpoint.UseDefaultPort
             };
 
