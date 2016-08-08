@@ -16,7 +16,7 @@ namespace RabbitMQSub
                 UserName = "guest",
                 Password = "guest",
                 VirtualHost = "/",
-                HostName = "",
+                HostName = "172.22.32.31",
                 Port = AmqpTcpEndpoint.UseDefaultPort
             };
 

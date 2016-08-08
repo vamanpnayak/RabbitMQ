@@ -17,6 +17,7 @@ namespace RabbitConsumer
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
+                new RConsumerTwo(),
                 new RConsumer()
             };
             ServiceBase.Run(ServicesToRun);

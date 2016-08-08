@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using EasyNetQ;
@@ -95,16 +97,28 @@ namespace RabbitPublisher.Bus
         //}
 
 
-        public Merchant ReceiveMessageFromQueueWithEnQ(IAdvancedBus bus)
+        public void ReceiveMessageFromQueueWithEnQ<T>(IAdvancedBus bus, IQueue queueName, string filname) where T : class
         {
-            Merchant  result = null;
-            bus.Consume<Merchant>(Queue, (msg, info) =>
-               {
-                   // Implement your handling logic here
-                   result = msg.Body;
-               });
+            bus.Consume<T>(queueName, (msg, messageReceivedInfo) =>
+            {
+                ProcessResult(msg.Body, filname);
+            });
+        }
 
-            return result;
+        private void ProcessResult<T>(T obj, string filname)
+        {
+            WriteToFile<T>(obj, filname);
+        }
+
+        private void WriteToFile<T>(T obj, string filname)
+        {
+            var myMerchant = obj as Merchant;
+            Debug.Write(myMerchant.FirstName);
+
+            using (var file = new StreamWriter($@"C:\vaman\{filname}", true))
+            {
+                file.WriteLine($"{myMerchant.FirstName},{myMerchant.LastName},{myMerchant.Email},{myMerchant.Website}");
+            }
         }
     }
 }
